@@ -2,46 +2,66 @@ const puppeteer = require('puppeteer');
 const filesystem = require('fs/promises');
 
 async function start(){
-    const driver = await puppeteer.launch({headless: false});
+    const driver = await puppeteer.launch();
     const page = await driver.newPage();
-    await page.goto('https://amazon.com/');
+    await page.goto('https://amazon.com/', {waitUntil: "networkidle2"});
 
-    await page.type("#twotabsearchtextbox", "white mechanical keyboard")
+    await page.type("#twotabsearchtextbox", "electric scooter")
     await Promise.all([page.click('#nav-search-submit-button'), page.waitForNavigation()])
 
+    // #this is probably bade code FYI # const text = await page.$$eval('a-price-whole', elements => elements.toString())
+    await new Promise(r => setTimeout(r, 2000));
+    const boxArray = await page.evaluate(() => {
 
 
-    const nameArray = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll(".info strong")).map(x => x.textContent)
+        return Array.from(document.getElementsByClassName("s-result-item")).map
+        ((x) => {
+            answer = x.textContent.replace(/^\s+|\s+$/g, '')
+            if (answer.includes('Sponsored')){
+                return 'Ad Post'
+            }
+            if (answer.includes('Related searches') || answer.includes('Need help?') || answer.includes('Previous123...') || answer.includes('MORE RESULTS')
+            || answer.includes('if(window.mix_csa){')){
+                return 'Junk Post'
+            }
+            else {
+                return answer
+            }
+        } )
+
+
+
     })
+    i = 0;
+    boxArray.forEach(box => {
+        console.log(i)
+        console.log(box)
+        i += 1;
+    })
+    // await filesystem.writeFile("productNames.txt", nameArray.join("\r\n"));
 
-    await filesystem.writeFile("productNames.txt", nameArray.join("\r\n"));
-    //
-    //
-    //
-    //
     // const secretMessage = await page.$eval('#message', element => element.textContent)
     // console.log(secretMessage)
     //
     // await page.waitForNavigation()
     //
     //
-
-
-
-
-
-    const photographs = await page.$$eval("img", (pictures) => {
-        return pictures.map(x => x.src)
-    })
-
-    for (const photograph of photographs) {
-        const picturePage = await page.goto(photograph);
-        await filesystem.writeFile(photograph.split("/").pop(), await picturePage.buffer())
-    }
-
-
-
+    //
+    //
+    //
+    //
+    //
+    // const photographs = await page.$$eval("img", (pictures) => {
+    //     return pictures.map(x => x.src)
+    // })
+    //
+    // for (const photograph of photographs) {
+    //     const picturePage = await page.goto(photograph);
+    //     await filesystem.writeFile(photograph.split("/").pop(), await picturePage.buffer())
+    // }
+    //
+    //
+    console.log('now closing')
     await driver.close()
 }
 

@@ -12,7 +12,9 @@ async function start(){
     // #this is probably bade code FYI # const text = await page.$$eval('a-price-whole', elements => elements.toString())
     await new Promise(r => setTimeout(r, 2000));
     const boxArray = await page.evaluate(() => {
-        return Array.from(document.getElementsByClassName("s-result-item")).map(x => (x.textContent).includes('Sponsored') ? 'AD POST ; IGNORE' : x.textContent.replace(/[\n\r]/g, '').trim())
+        return Array.from(document.getElementsByClassName("s-result-item")).map
+        (x => (x.textContent).includes('Sponsored') ?
+            'AD POST ; IGNORE' : x.textContent.replace(/^\s+|\s+$/g, '') )
     })
     i = 0;
     boxArray.forEach(box => {

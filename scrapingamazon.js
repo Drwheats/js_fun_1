@@ -11,40 +11,19 @@ async function start(){
 
     // #this is probably bade code FYI # const text = await page.$$eval('a-price-whole', elements => elements.toString())
     await new Promise(r => setTimeout(r, 2000));
+    const uselessVariable = "";
     const boxArray = await page.evaluate(() => {
         return Array.from(document.getElementsByClassName("s-result-item")).map
         (x => (x.textContent).includes('Sponsored') ?
             'AD POST ; IGNORE' : x.textContent.replace(/^\s+|\s+$/g, '') )
     })
-    i = 0;
+    i = 1;
     boxArray.forEach(box => {
         console.log(i)
         console.log(box)
-        i += 1;
+        i += 2;
     })
-    // await filesystem.writeFile("productNames.txt", nameArray.join("\r\n"));
-
-    // const secretMessage = await page.$eval('#message', element => element.textContent)
-    // console.log(secretMessage)
-    //
-    // await page.waitForNavigation()
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // const photographs = await page.$$eval("img", (pictures) => {
-    //     return pictures.map(x => x.src)
-    // })
-    //
-    // for (const photograph of photographs) {
-    //     const picturePage = await page.goto(photograph);
-    //     await filesystem.writeFile(photograph.split("/").pop(), await picturePage.buffer())
-    // }
-    //
-    //
+    
     console.log('now closing')
     await driver.close()
 }

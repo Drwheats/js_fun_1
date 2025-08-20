@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const filesystem = require('fs/promises');
 
 async function start(){
+    const passenger = 0;
     const driver = await puppeteer.launch();
     const page = await driver.newPage();
     await page.goto('https://amazon.com/', {waitUntil: "networkidle2"});

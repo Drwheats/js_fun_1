@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const filesystem = require('fs/promises');
+const epic = "";
 
 async function start(){
     const driver = await puppeteer.launch();

@@ -1,3 +1,5 @@
 committed
 committer
 committee
+
+how to spell commiter
